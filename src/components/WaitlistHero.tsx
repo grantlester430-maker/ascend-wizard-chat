@@ -2,12 +2,14 @@
 
 import { useState, useRef, FormEvent } from "react"
 import { motion } from "framer-motion"
+import { ArrowLeft } from "lucide-react"
 
 interface WaitlistHeroProps {
   onSubmit: (email: string) => void;
+  onBack?: () => void;
 }
 
-export const WaitlistHero = ({ onSubmit }: WaitlistHeroProps) => {
+export const WaitlistHero = ({ onSubmit, onBack }: WaitlistHeroProps) => {
   const [email, setEmail] = useState("")
   const [status, setStatus] = useState<"idle" | "loading" | "success">("idle")
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -100,6 +102,20 @@ export const WaitlistHero = ({ onSubmit }: WaitlistHeroProps) => {
       transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
       className="relative flex min-h-screen w-full flex-col items-center justify-center bg-waitlist-bg p-4"
     >
+      {/* Back Arrow */}
+      {onBack && (
+        <motion.button
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2 }}
+          onClick={onBack}
+          className="absolute top-6 left-6 p-2 text-muted-foreground hover:text-foreground transition-colors z-20"
+          aria-label="Go back"
+        >
+          <ArrowLeft className="h-6 w-6" />
+        </motion.button>
+      )}
+
       <canvas
         ref={canvasRef}
         className="pointer-events-none absolute inset-0 h-full w-full"

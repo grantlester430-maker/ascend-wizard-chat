@@ -2,8 +2,13 @@
 
 import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
+import { ArrowLeft } from "lucide-react"
 
-export const SuccessScreen = () => {
+interface SuccessScreenProps {
+  onBack?: () => void;
+}
+
+export const SuccessScreen = ({ onBack }: SuccessScreenProps) => {
   const [showConfetti, setShowConfetti] = useState(false)
 
   useEffect(() => {
@@ -19,6 +24,20 @@ export const SuccessScreen = () => {
       transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
       className="flex min-h-screen w-full flex-col items-center justify-center bg-waitlist-bg p-4 relative overflow-hidden"
     >
+      {/* Back Arrow */}
+      {onBack && (
+        <motion.button
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2 }}
+          onClick={onBack}
+          className="absolute top-6 left-6 p-2 text-muted-foreground hover:text-foreground transition-colors z-20"
+          aria-label="Go back"
+        >
+          <ArrowLeft className="h-6 w-6" />
+        </motion.button>
+      )}
+
       {/* Animated background circles */}
       <div className="absolute inset-0 overflow-hidden">
         {[...Array(5)].map((_, i) => (

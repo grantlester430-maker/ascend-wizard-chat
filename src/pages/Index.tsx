@@ -48,6 +48,14 @@ const Index = () => {
     setShowBurn(false);
   };
 
+  const handleBackToLanding = () => {
+    setCurrentPage("landing");
+  };
+
+  const handleBackToWaitlist = () => {
+    setCurrentPage("waitlist");
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       <BurnTransition isActive={showBurn} onComplete={handleBurnComplete} />
@@ -68,19 +76,34 @@ const Index = () => {
         )}
 
         {currentPage === "waitlist" && (
-          <WaitlistHero key="waitlist" onSubmit={handleWaitlistSubmit} />
+          <WaitlistHero 
+            key="waitlist" 
+            onSubmit={handleWaitlistSubmit} 
+            onBack={handleBackToLanding}
+          />
         )}
 
         {currentPage === "rant" && (
-          <RantForm key="rant" email={userEmail} onSubmit={handleRantSubmit} />
+          <RantForm 
+            key="rant" 
+            email={userEmail} 
+            onSubmit={handleRantSubmit}
+            onBack={handleBackToWaitlist}
+          />
         )}
 
         {currentPage === "success" && (
-          <SuccessScreen key="success" />
+          <SuccessScreen 
+            key="success"
+            onBack={handleBackToLanding}
+          />
         )}
 
         {currentPage === "premium" && (
-          <PremiumBankPage key="premium" />
+          <PremiumBankPage 
+            key="premium"
+            onBack={handleBackToLanding}
+          />
         )}
       </AnimatePresence>
     </div>

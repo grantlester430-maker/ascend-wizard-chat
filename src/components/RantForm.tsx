@@ -2,10 +2,12 @@
 
 import { useState, useRef, FormEvent } from "react"
 import { motion } from "framer-motion"
+import { ArrowLeft } from "lucide-react"
 
 interface RantFormProps {
   email: string;
   onSubmit: (data: { email: string; rant: string; companyRevenue: string }) => void;
+  onBack?: () => void;
 }
 
 const SendIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -15,7 +17,7 @@ const SendIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-export const RantForm = ({ email, onSubmit }: RantFormProps) => {
+export const RantForm = ({ email, onSubmit, onBack }: RantFormProps) => {
   const [rant, setRant] = useState("")
   const [companyRevenue, setCompanyRevenue] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -27,7 +29,6 @@ export const RantForm = ({ email, onSubmit }: RantFormProps) => {
 
     setIsSubmitting(true)
 
-    // Simulate submission delay
     setTimeout(() => {
       onSubmit({ email, rant, companyRevenue })
       setIsSubmitting(false)
@@ -40,7 +41,6 @@ export const RantForm = ({ email, onSubmit }: RantFormProps) => {
       setRant(value)
     }
 
-    // Auto-resize textarea
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto"
       const newHeight = Math.min(textareaRef.current.scrollHeight, 200)
@@ -56,8 +56,22 @@ export const RantForm = ({ email, onSubmit }: RantFormProps) => {
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: "-100%", opacity: 0 }}
       transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className="flex min-h-screen w-full flex-col items-center justify-center bg-waitlist-bg p-4"
+      className="flex min-h-screen w-full flex-col items-center justify-center bg-waitlist-bg p-4 relative"
     >
+      {/* Back Arrow */}
+      {onBack && (
+        <motion.button
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2 }}
+          onClick={onBack}
+          className="absolute top-6 left-6 p-2 text-muted-foreground hover:text-foreground transition-colors z-20"
+          aria-label="Go back"
+        >
+          <ArrowLeft className="h-6 w-6" />
+        </motion.button>
+      )}
+
       <div className="w-full max-w-xl flex flex-col gap-10">
         <p className="text-center text-3xl text-foreground">
           How Can we Help You
