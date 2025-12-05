@@ -6,7 +6,7 @@ import { ArrowLeft } from "lucide-react"
 
 interface RantFormProps {
   email: string;
-  onSubmit: (data: { email: string; rant: string; companyRevenue: string }) => void;
+  onSubmit: (data: { email: string; firstName: string; lastName: string; rant: string; companyRevenue: string }) => void;
   onBack?: () => void;
 }
 
@@ -18,6 +18,8 @@ const SendIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 export const RantForm = ({ email, onSubmit, onBack }: RantFormProps) => {
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
   const [rant, setRant] = useState("")
   const [companyRevenue, setCompanyRevenue] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -25,12 +27,12 @@ export const RantForm = ({ email, onSubmit, onBack }: RantFormProps) => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    if (!rant.trim() || !companyRevenue.trim()) return
+    if (!rant.trim() || !companyRevenue.trim() || !firstName.trim() || !lastName.trim()) return
 
     setIsSubmitting(true)
 
     setTimeout(() => {
-      onSubmit({ email, rant, companyRevenue })
+      onSubmit({ email, firstName, lastName, rant, companyRevenue })
       setIsSubmitting(false)
     }, 1000)
   }
@@ -48,7 +50,7 @@ export const RantForm = ({ email, onSubmit, onBack }: RantFormProps) => {
     }
   }
 
-  const hasValue = rant.trim().length > 0 && companyRevenue.trim().length > 0
+  const hasValue = rant.trim().length > 0 && companyRevenue.trim().length > 0 && firstName.trim().length > 0 && lastName.trim().length > 0
 
   return (
     <motion.div
@@ -72,10 +74,40 @@ export const RantForm = ({ email, onSubmit, onBack }: RantFormProps) => {
         </motion.button>
       )}
 
-      <div className="w-full max-w-xl flex flex-col gap-10">
+      <div className="w-full max-w-xl flex flex-col gap-6">
         <p className="text-center text-3xl text-foreground">
           How Can we Help You
         </p>
+
+        {/* Name Fields */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="w-full">
+            <label className="block text-sm text-muted-foreground mb-2">
+              First Name
+            </label>
+            <input
+              type="text"
+              required
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder="John"
+              className="w-full px-4 py-3 rounded-xl bg-waitlist-input text-foreground border border-border/20 outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-muted-foreground"
+            />
+          </div>
+          <div className="w-full">
+            <label className="block text-sm text-muted-foreground mb-2">
+              Last Name
+            </label>
+            <input
+              type="text"
+              required
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder="Doe"
+              className="w-full px-4 py-3 rounded-xl bg-waitlist-input text-foreground border border-border/20 outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-muted-foreground"
+            />
+          </div>
+        </div>
 
         {/* Company Revenue Input */}
         <div className="w-full">
