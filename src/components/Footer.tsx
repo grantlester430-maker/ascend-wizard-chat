@@ -1,20 +1,9 @@
-interface FooterProps {
-  onPrivateBankClick?: () => void;
-}
-
-const Footer = ({ onPrivateBankClick }: FooterProps) => {
+const Footer = () => {
   return (
     <footer className="bg-foreground py-8 border-t border-background/10">
       <div className="container mx-auto px-6 text-center">
-        <button
-          onClick={onPrivateBankClick}
-          className="text-background/70 hover:text-background transition-colors text-[10px] tracking-wide mb-2 inline-block cursor-pointer bg-transparent border-none"
-        >
-          Join our private bank here
-        </button>
-
         {/* Hidden easter egg - super tiny and barely visible */}
-        <div className="mt-6 opacity-[0.08] hover:opacity-30 transition-opacity duration-700 cursor-default select-none">
+        <div className="opacity-[0.08] hover:opacity-30 transition-opacity duration-700 cursor-default select-none">
           <p className="font-garamond italic text-[6px] text-background/60 tracking-widest">
             We are always the best in the industry
           </p>
