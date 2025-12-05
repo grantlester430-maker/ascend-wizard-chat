@@ -10,6 +10,7 @@ import SuccessScreen from "@/components/SuccessScreen";
 import BurnTransition from "@/components/BurnTransition";
 import PremiumBankPage from "@/components/PremiumBankPage";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 type PageState = "landing" | "waitlist" | "rant" | "success" | "premium";
 
@@ -30,6 +31,26 @@ const Index = () => {
 
   const handleRantSubmit = async (data: { email: string; firstName: string; lastName: string; rant: string; companyRevenue: string }) => {
     console.log("Submitting data:", data);
+
+    const { error } = await supabase
+      .from('submissions')
+      .insert({
+        email: data.email,
+        first_name: data.firstName,
+        last_name: data.lastName,
+        company_revenue: data.companyRevenue,
+        rant: data.rant,
+      });
+
+    if (error) {
+      console.error("Error saving submission:", error);
+      toast({
+        title: "Error",
+        description: "Failed to save your submission. Please try again.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     toast({
       title: "Submission received!",
