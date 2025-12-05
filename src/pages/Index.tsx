@@ -28,7 +28,7 @@ const Index = () => {
     setCurrentPage("rant");
   };
 
-  const handleRantSubmit = async (data: { email: string; rant: string; companyRevenue: string }) => {
+  const handleRantSubmit = async (data: { email: string; firstName: string; lastName: string; rant: string; companyRevenue: string }) => {
     console.log("Submitting data:", data);
 
     toast({
